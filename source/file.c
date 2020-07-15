@@ -28,9 +28,11 @@ void get_cabecalho_arqv(FILE* img_origem,Img_BMP256* img_dest){
 
 	memcpy(&cabecalho->assinatura,bytes_lidos,2);
 	shift_lido += 2;
-	memcpy(&cabecalho->assinatura,bytes_lidos+shift_lido,4);
+	memcpy(&cabecalho->t_arqv,bytes_lidos+shift_lido,4);
 	shift_lido += 4;
-	memcpy(&cabecalho->assinatura,bytes_lidos+shift_lido,4);
+	memcpy(&cabecalho->reservado,bytes_lidos+shift_lido,4);
+	shift_lido += 4;
+	memcpy(&cabecalho->deslocamento,bytes_lidos+shift_lido,4);
 	free(bytes_lidos);
 }
 
