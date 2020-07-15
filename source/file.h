@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #ifndef _BMP256FILE_H_
 #define _BMP256FILE_H_
@@ -37,7 +38,14 @@ struct paleta{
 };
 
 struct conteudoBMP256{
-	unsigned char** cor;
+	unsigned char** pixel;
 };
+
+typedef struct imagem_bmp256{
+	char* nome;
+	struct cabecalhoarquivo cab_arqv;
+	struct cabecalhobmp cab_bmp;
+	struct paleta paleta;
+}Img_BMP256;
 
 #endif
