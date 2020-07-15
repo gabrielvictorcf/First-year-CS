@@ -6,7 +6,7 @@
 #define _BMP256FILE_H_
 
 struct cabecalhoarquivo{
-	char assinatura[3];
+	char assinatura[2];
 	int t_arqv;
 	int reservado;
 	int deslocamento;
@@ -16,8 +16,8 @@ struct cabecalhobmp{
 	int t_cabecalho;
 	int largura_img;
 	int altura_img;
-	int n_planos;
-	int bits_per_pxl;
+	short n_planos;
+	short bits_per_pxl;
 	int compressao;
 	int t_img;
 	int pxl_per_metro_hor;
@@ -42,7 +42,6 @@ struct conteudoBMP256{
 };
 
 typedef struct imagem_bmp256{
-	char* nome;
 	struct cabecalhoarquivo cab_arqv;
 	struct cabecalhobmp cab_bmp;
 	struct paleta paleta;
