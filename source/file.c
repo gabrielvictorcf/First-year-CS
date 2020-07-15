@@ -18,6 +18,11 @@ void free_BMP256(Img_BMP256* img){
 	free(img);
 }
 
+int ler_campo(void* campo,int qntd,const void* buffer_origem){
+	memcpy(campo,buffer_origem,qntd);
+	return qntd;
+}
+
 void get_cabecalho_arqv(FILE* img_origem,Img_BMP256* img_dest){
 	struct cabecalhoarquivo* cabecalho = &img_dest->cab_arqv;
 	unsigned char* bytes_lidos = malloc(14);
