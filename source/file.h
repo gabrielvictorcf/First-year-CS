@@ -33,7 +33,7 @@ struct corBMP{
 };
 
 struct paleta{
-	corBMP* cores;
+	struct corBMP* cores;
 };
 
 struct conteudoBMP256{
