@@ -96,7 +96,7 @@ void get_conteudo(FILE* img_origem,Img_BMP256* img_dest){
 	unsigned char* bytes_lidos = malloc(qntd_pixels);
 	fread(bytes_lidos,1,qntd_pixels,img_origem);
 	
-	for (int i = altura_img-1; i >= 0; i--){
+	for (int i = 0; i < altura_img; i++){
 		memcpy(conteudo->pixels[i],bytes_lidos+shift_lido,largura_linha);
 		shift_lido += largura_linha;
 	};
