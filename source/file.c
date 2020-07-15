@@ -24,7 +24,7 @@ void get_cabecalho_arqv(FILE* img_origem,Img_BMP256* img_dest){
 	struct cabecalhoarquivo* cabecalho = &img_dest->cab_arqv;
 	unsigned char* bytes_lidos = malloc(54);
 	int shift_lido = 0;
-	fread(bytes_lidos,1,54,img_origem);
+	fread(bytes_lidos,1,14,img_origem);
 
 	memcpy(&cabecalho->assinatura,bytes_lidos,2);
 	shift_lido += 2;
@@ -40,7 +40,7 @@ void get_cabecalho_bmp(FILE* img_origem,Img_BMP256* img_dest){
 	struct cabecalhobmp* cabecalho = &img_dest->cab_bmp;
 	unsigned char* bytes_lidos = malloc(14);
 	int shift_lido = 0;
-	fread(bytes_lidos,1,14,img_origem);
+	fread(bytes_lidos,1,40,img_origem);
 
 	memcpy(&cabecalho->t_cabecalho,bytes_lidos,4);
 	shift_lido += 4;
