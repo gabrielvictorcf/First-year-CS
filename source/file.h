@@ -49,4 +49,11 @@ typedef struct imagem_bmp256{
 	struct conteudoBMP256 conteudo;
 }Img_BMP256;
 
+Img_BMP256* gerar_imagem();
+void free_BMP256(Img_BMP256* img);
+void get_cabecalho_arqv(FILE* img_origem,Img_BMP256* img_dest);
+void get_cabecalho_bmp(FILE* img_origem,Img_BMP256* img_dest);
+void get_paleta(FILE* img_origem,Img_BMP256* img_dest);
+void gerar_conteudo(Img_BMP256* img,int altura,int largura);
+void get_conteudo(FILE* img_origem,Img_BMP256* img_dest);
 #endif
