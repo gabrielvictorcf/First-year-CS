@@ -5,3 +5,4 @@ descricao/
 #Arquivos e objetos compilados#
 *.o
 *.exe
+source/teste.c

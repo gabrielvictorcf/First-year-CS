@@ -38,7 +38,7 @@ struct paleta{
 };
 
 struct conteudoBMP256{
-	unsigned char** pixel;
+	unsigned char** pixels;
 };
 
 typedef struct imagem_bmp256{
