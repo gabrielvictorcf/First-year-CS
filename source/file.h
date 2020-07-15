@@ -46,6 +46,7 @@ typedef struct imagem_bmp256{
 	struct cabecalhoarquivo cab_arqv;
 	struct cabecalhobmp cab_bmp;
 	struct paleta paleta;
+	struct conteudoBMP256 conteudo;
 }Img_BMP256;
 
 #endif
