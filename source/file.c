@@ -8,8 +8,7 @@ Img_BMP256* gerar_imagem(){
 }
 
 void free_BMP256(Img_BMP256* img){
-	int altura = img->cab_bmp.altura_img, largura = img->cab_bmp.largura_img;
-	int tam_pixel = img->cab_bmp.bits_per_pxl;
+	int altura = img->cab_bmp.altura_img;
 
 	for (int i = 0; i < altura; i++){
 		free(img->conteudo.pixels[i]);
@@ -23,50 +22,53 @@ void free_BMP256(Img_BMP256* img){
 
 void get_cabecalho_arqv(FILE* img_origem,Img_BMP256* img_dest){
 	struct cabecalhoarquivo* cabecalho = &img_dest->cab_arqv;
-	unsigned char* bytes_lidos;
+	unsigned char* bytes_lidos = malloc(54);
 	int shift_lido = 0;
 	fread(bytes_lidos,1,54,img_origem);
 
-	memcpy(cabecalho->assinatura,bytes_lidos,2);
+	memcpy(&cabecalho->assinatura,bytes_lidos,2);
 	shift_lido += 2;
-	memcpy(cabecalho->assinatura,bytes_lidos+shift_lido,4);
+	memcpy(&cabecalho->assinatura,bytes_lidos+shift_lido,4);
 	shift_lido += 4;
-	memcpy(cabecalho->assinatura,bytes_lidos+shift_lido,4);
+	memcpy(&cabecalho->assinatura,bytes_lidos+shift_lido,4);
+	free(bytes_lidos);
 }
 
 void get_cabecalho_bmp(FILE* img_origem,Img_BMP256* img_dest){
 	struct cabecalhobmp* cabecalho = &img_dest->cab_bmp;
-	unsigned char* bytes_lidos;
+	unsigned char* bytes_lidos = malloc(14);
 	int shift_lido = 0;
 	fread(bytes_lidos,1,14,img_origem);
 
-	memcpy(cabecalho->t_cabecalho,bytes_lidos,4);
+	memcpy(&cabecalho->t_cabecalho,bytes_lidos,4);
 	shift_lido += 4;
-	memcpy(cabecalho->largura_img,bytes_lidos,4);
+	memcpy(&cabecalho->largura_img,bytes_lidos,4);
 	shift_lido += 4;
-	memcpy(cabecalho->altura_img,bytes_lidos,4);
+	memcpy(&cabecalho->altura_img,bytes_lidos,4);
 	shift_lido += 4;
-	memcpy(cabecalho->n_planos,bytes_lidos,2);
+	memcpy(&cabecalho->n_planos,bytes_lidos,2);
 	shift_lido += 2;
-	memcpy(cabecalho->bits_per_pxl,bytes_lidos,2);
+	memcpy(&cabecalho->bits_per_pxl,bytes_lidos,2);
 	shift_lido += 2;
-	memcpy(cabecalho->compressao,bytes_lidos,4);
+	memcpy(&cabecalho->compressao,bytes_lidos,4);
 	shift_lido += 4;
-	memcpy(cabecalho->t_img,bytes_lidos,4);
+	memcpy(&cabecalho->t_img,bytes_lidos,4);
 	shift_lido += 4;
-	memcpy(cabecalho->pxl_per_metro_hor,bytes_lidos,4);
+	memcpy(&cabecalho->pxl_per_metro_hor,bytes_lidos,4);
 	shift_lido += 4;
-	memcpy(cabecalho->pxl_per_metro_ver,bytes_lidos,4);
+	memcpy(&cabecalho->pxl_per_metro_ver,bytes_lidos,4);
 	shift_lido += 4;
-	memcpy(cabecalho->n_cores_usadas,bytes_lidos,4);
+	memcpy(&cabecalho->n_cores_usadas,bytes_lidos,4);
 	shift_lido += 4;
-	memcpy(cabecalho->n_cores_uteis,bytes_lidos,4);
+	memcpy(&cabecalho->n_cores_uteis,bytes_lidos,4);
+	free(bytes_lidos);
 }
 
 void get_paleta(FILE* img_origem,Img_BMP256* img_dest){
 	struct paleta* paleta = &img_dest->paleta;
-	unsigned char* bytes_lidos;
+	
 	int shift_lido = 0, t_cor = sizeof(struct corBMP);
+	unsigned char* bytes_lidos = malloc(256 * t_cor);
 	fread(bytes_lidos,1, 256*t_cor,img_origem);
 
 	for (int i = 0; i < 256; i++,shift_lido += t_cor){
@@ -91,7 +93,7 @@ void get_conteudo(FILE* img_origem,Img_BMP256* img_dest){
 	struct conteudoBMP256* conteudo = &img_dest->conteudo;
 
 	int shift_lido = 0;
-	unsigned char* bytes_lidos;
+	unsigned char* bytes_lidos = malloc(qntd_pixels);
 	fread(bytes_lidos,1,qntd_pixels,img_origem);
 	
 	for (int i = altura_img-1; i >= 0; i++){
