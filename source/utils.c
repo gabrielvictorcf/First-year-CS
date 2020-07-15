@@ -1,5 +1,4 @@
 #include "utils.h"
-#define BUFFER_SIZE	40
 
 char* read_line(FILE* input_stream){
 	char* line = NULL;
