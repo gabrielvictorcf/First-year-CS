@@ -29,7 +29,7 @@ void get_cabecalho_arqv(FILE* img_origem,Img_BMP256* img_dest){
 }
 
 void get_cabecalho_bmp(FILE* img_origem,Img_BMP256* img_dest){
-	struct cabecalhobmp* cabecalho = &img_dest->cab_arqv;
+	struct cabecalhobmp* cabecalho = &img_dest->cab_bmp;
 	unsigned char* bytes_lidos;
 	int shift_lido = 0;
 	fread(bytes_lidos,1,54,img_origem);
