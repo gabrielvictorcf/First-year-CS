@@ -8,7 +8,13 @@ Img_BMP256* gerar_imagem(){
 }
 
 void free_BMP256(Img_BMP256* img){
-	//lembrar de dar free no conteudo!
+	int altura = img->cab_bmp.altura_img, largura = img->cab_bmp.largura_img;
+	int tam_pixel = img->cab_bmp.bits_per_pxl;
+
+	for (int i = 0; i < altura; i++){
+		free(img->conteudo.pixels[i]);
+	}
+	free(img->conteudo.pixels);
 	
 	free(img->nome);
 	free(img->paleta.cores);
