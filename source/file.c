@@ -29,13 +29,10 @@ void get_cabecalho_arqv(FILE* img_origem,Img_BMP256* img_dest){
 	int shift_lido = 0;
 	fread(bytes_lidos,1,14,img_origem);
 
-	memcpy(&cabecalho->assinatura,bytes_lidos,2);
-	shift_lido += 2;
-	memcpy(&cabecalho->t_arqv,bytes_lidos+shift_lido,4);
-	shift_lido += 4;
-	memcpy(&cabecalho->reservado,bytes_lidos+shift_lido,4);
-	shift_lido += 4;
-	memcpy(&cabecalho->deslocamento,bytes_lidos+shift_lido,4);
+	shift_lido += ler_campo(cabecalho->assinatura,2,bytes_lidos);
+	shift_lido += ler_campo(&cabecalho->t_arqv,4,bytes_lidos+shift_lido);
+	shift_lido += ler_campo(&cabecalho->reservado,4,bytes_lidos+shift_lido);
+	shift_lido += ler_campo(&cabecalho->deslocamento,4,bytes_lidos+shift_lido);
 	free(bytes_lidos);
 }
 
@@ -45,27 +42,17 @@ void get_cabecalho_bmp(FILE* img_origem,Img_BMP256* img_dest){
 	int shift_lido = 0;
 	fread(bytes_lidos,1,40,img_origem);
 
-	memcpy(&cabecalho->t_cabecalho,bytes_lidos+shift_lido,4);
-	shift_lido += 4;
-	memcpy(&cabecalho->largura_img,bytes_lidos+shift_lido,4);
-	shift_lido += 4;
-	memcpy(&cabecalho->altura_img,bytes_lidos+shift_lido,4);
-	shift_lido += 4;
-	memcpy(&cabecalho->n_planos,bytes_lidos+shift_lido,2);
-	shift_lido += 2;
-	memcpy(&cabecalho->bits_per_pxl,bytes_lidos+shift_lido,2);
-	shift_lido += 2;
-	memcpy(&cabecalho->compressao,bytes_lidos+shift_lido,4);
-	shift_lido += 4;
-	memcpy(&cabecalho->t_img,bytes_lidos+shift_lido,4);
-	shift_lido += 4;
-	memcpy(&cabecalho->pxl_per_metro_hor,bytes_lidos+shift_lido,4);
-	shift_lido += 4;
-	memcpy(&cabecalho->pxl_per_metro_ver,bytes_lidos+shift_lido,4);
-	shift_lido += 4;
-	memcpy(&cabecalho->n_cores_usadas,bytes_lidos+shift_lido,4);
-	shift_lido += 4;
-	memcpy(&cabecalho->n_cores_uteis,bytes_lidos+shift_lido,4);
+	shift_lido += ler_campo(&cabecalho->t_cabecalho,4,bytes_lidos);
+	shift_lido += ler_campo(&cabecalho->largura_img,4,bytes_lidos+shift_lido);
+	shift_lido += ler_campo(&cabecalho->altura_img,4,bytes_lidos+shift_lido);
+	shift_lido += ler_campo(&cabecalho->n_planos,2,bytes_lidos+shift_lido);
+	shift_lido += ler_campo(&cabecalho->bits_per_pxl,2,bytes_lidos+shift_lido);
+	shift_lido += ler_campo(&cabecalho->compressao,4,bytes_lidos+shift_lido);
+	shift_lido += ler_campo(&cabecalho->t_img,4,bytes_lidos+shift_lido);
+	shift_lido += ler_campo(&cabecalho->pxl_per_metro_hor,4,bytes_lidos+shift_lido);
+	shift_lido += ler_campo(&cabecalho->pxl_per_metro_ver,4,bytes_lidos+shift_lido);
+	shift_lido += ler_campo(&cabecalho->n_cores_usadas,4,bytes_lidos+shift_lido);
+	shift_lido += ler_campo(&cabecalho->n_cores_uteis,4,bytes_lidos+shift_lido);
 	free(bytes_lidos);
 }
 
@@ -76,8 +63,8 @@ void get_paleta(FILE* img_origem,Img_BMP256* img_dest){
 	unsigned char* bytes_lidos = malloc(256 * t_cor);
 	fread(bytes_lidos,1, 256*t_cor,img_origem);
 
-	for (int i = 0; i < 256; i++,shift_lido += t_cor){
-		memcpy(&paleta->cores[i],bytes_lidos+shift_lido,t_cor);
+	for (int i = 0; i < 256; i++){
+		shift_lido += ler_campo(&paleta->cores[i],t_cor,bytes_lidos+shift_lido);
 	};
 	free(bytes_lidos);
 }
@@ -102,8 +89,7 @@ void get_conteudo(FILE* img_origem,Img_BMP256* img_dest){
 	fread(bytes_lidos,1,qntd_pixels,img_origem);
 	
 	for (int i = 0; i < altura_img; i++){
-		memcpy(conteudo->pixels[i],bytes_lidos+shift_lido,largura_linha);
-		shift_lido += largura_linha;
+		shift_lido += ler_campo(conteudo->pixels[i],largura_linha,bytes_lidos+shift_lido);
 	};
 	free(bytes_lidos);
 }
