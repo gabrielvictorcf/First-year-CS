@@ -6,6 +6,7 @@
 #define _BMP256FILE_H_
 
 #define QTD_CORES 256
+#define INTENSIDADE_MAX 255
 #define	TAMANHO_PIXEL(bits)	(bits/8)
 #define BMP_PAD(largura) (largura + largura%4)
 

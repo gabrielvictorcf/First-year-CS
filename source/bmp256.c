@@ -1,4 +1,4 @@
-#include "file.h"
+#include "bmp256.h"
 
 Img_BMP256* gerar_imagem(){
 	Img_BMP256* nova_img = malloc(1 * sizeof(Img_BMP256));
