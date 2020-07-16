@@ -2,7 +2,7 @@
 
 Img_BMP256* gerar_imagem(){
 	Img_BMP256* nova_img = malloc(1 * sizeof(Img_BMP256));
-	nova_img->paleta.cores = malloc(256 * sizeof(struct corBMP));
+	nova_img->paleta.cores = malloc(QTD_CORES * sizeof(struct corBMP));
 	return nova_img;
 }
 
@@ -60,10 +60,10 @@ void get_paleta(FILE* img_origem,Img_BMP256* img_dest){
 	struct paleta* paleta = &img_dest->paleta;
 	
 	int shift_lido = 0, t_cor = sizeof(struct corBMP);
-	unsigned char* bytes_lidos = malloc(256 * t_cor);
-	fread(bytes_lidos,1, 256*t_cor,img_origem);
+	unsigned char* bytes_lidos = malloc(QTD_CORES * t_cor);
+	fread(bytes_lidos,1, QTD_CORES*t_cor,img_origem);
 
-	for (int i = 0; i < 256; i++){
+	for (int i = 0; i < QTD_CORES; i++){
 		shift_lido += ler_campo(&paleta->cores[i],t_cor,bytes_lidos+shift_lido);
 	};
 	free(bytes_lidos);
@@ -80,16 +80,34 @@ void get_conteudo(FILE* img_origem,Img_BMP256* img_dest){
 	int altura_img = img_dest->cab_bmp.altura_img, largura_img = img_dest->cab_bmp.largura_img;
 	gerar_conteudo(img_dest,altura_img,largura_img);
 	int qntd_pixels = altura_img * largura_img;
-	int tam_pixel = img_dest->cab_bmp.bits_per_pxl / 8;
+	int tam_pixel = TAMANHO_PIXEL(img_dest->cab_bmp.bits_per_pxl);
 	int largura_linha = tam_pixel*largura_img;
 	struct conteudoBMP256* conteudo = &img_dest->conteudo;
 
 	int shift_lido = 0;
-	unsigned char* bytes_lidos = malloc(qntd_pixels);
-	fread(bytes_lidos,1,qntd_pixels,img_origem);
+	unsigned char* bytes_lidos = malloc(qntd_pixels * tam_pixel);
+	fread(bytes_lidos,1,qntd_pixels * tam_pixel,img_origem);
 	
 	for (int i = 0; i < altura_img; i++){
 		shift_lido += ler_campo(conteudo->pixels[i],largura_linha,bytes_lidos+shift_lido);
 	};
 	free(bytes_lidos);
+}
+
+Img_BMP256* ler_arquivo_BMP256(const FILE* arqv_BMP256,const char* nome_img){
+	Img_BMP256* img_saida = gerar_imagem();
+	get_cabecalho_arqv(arqv_BMP256,img_saida);
+
+	char* extensao = strrchr(nome_img,'.');
+	char* assinatura = img_saida->cab_arqv.assinatura;
+	if(!strcmp(extensao,".bmp") || !strcmp(assinatura,"BM")){
+		printf("Consegui abrir!\n");
+		get_cabecalho_bmp(arqv_BMP256,img_saida);
+		get_paleta(arqv_BMP256,img_saida);
+		get_conteudo(arqv_BMP256,img_saida);
+	}else{
+		printf("Arquivo nao e do formato BMP\n");
+		return NULL;
+	};
+	return img_saida;
 }
