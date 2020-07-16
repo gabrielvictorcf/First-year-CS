@@ -53,6 +53,8 @@ void get_cabecalho_bmp(FILE* img_origem,Img_BMP256* img_dest){
 	shift_lido += ler_campo(&cabecalho->pxl_per_metro_ver,4,bytes_lidos+shift_lido);
 	shift_lido += ler_campo(&cabecalho->n_cores_usadas,4,bytes_lidos+shift_lido);
 	shift_lido += ler_campo(&cabecalho->n_cores_uteis,4,bytes_lidos+shift_lido);
+	
+	cabecalho->largura_img = BMP_PAD(cabecalho->largura_img);
 	free(bytes_lidos);
 }
 
@@ -94,7 +96,7 @@ void get_conteudo(FILE* img_origem,Img_BMP256* img_dest){
 	free(bytes_lidos);
 }
 
-Img_BMP256* ler_arquivo_BMP256(const FILE* arqv_BMP256,const char* nome_img){
+Img_BMP256* ler_arquivo_BMP256(FILE* arqv_BMP256,const char* nome_img){
 	Img_BMP256* img_saida = gerar_imagem();
 	get_cabecalho_arqv(arqv_BMP256,img_saida);
 
