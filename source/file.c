@@ -113,3 +113,44 @@ Img_BMP256* ler_arquivo_BMP256(FILE* arqv_BMP256,const char* nome_img){
 	};
 	return img_saida;
 }
+
+void write_cabecalho_arqv(FILE* nova_img,Img_BMP256* img_fonte){
+	fwrite(&img_fonte->cab_arqv.assinatura,1,2,nova_img);
+	fwrite(&img_fonte->cab_arqv.t_arqv,1,4,nova_img);
+	fwrite(&img_fonte->cab_arqv.reservado,1,4,nova_img);
+	fwrite(&img_fonte->cab_arqv.deslocamento,1,4,nova_img);
+}
+
+void write_cabecalho_bmp(FILE* nova_img,Img_BMP256* img_fonte){
+	fwrite(&img_fonte->cab_bmp.t_cabecalho,1,4,nova_img);
+	fwrite(&img_fonte->cab_bmp.largura_img,1,4,nova_img);
+	fwrite(&img_fonte->cab_bmp.altura_img,1,4,nova_img);
+	fwrite(&img_fonte->cab_bmp.n_planos,1,2,nova_img);
+	fwrite(&img_fonte->cab_bmp.bits_per_pxl,1,2,nova_img);
+	fwrite(&img_fonte->cab_bmp.compressao,1,4,nova_img);
+	fwrite(&img_fonte->cab_bmp.t_img,1,4,nova_img);
+	fwrite(&img_fonte->cab_bmp.pxl_per_metro_hor,1,4,nova_img);
+	fwrite(&img_fonte->cab_bmp.pxl_per_metro_ver,1,4,nova_img);
+	fwrite(&img_fonte->cab_bmp.n_cores_usadas,1,4,nova_img);
+	fwrite(&img_fonte->cab_bmp.n_cores_uteis,1,4,nova_img);
+}
+
+void write_paleta(FILE* nova_img,Img_BMP256* img_fonte){
+	int t_cor = sizeof(struct corBMP);
+	fwrite(img_fonte->paleta.cores,1,QTD_CORES * t_cor,nova_img);
+}
+
+void write_conteudo(FILE* nova_img,Img_BMP256* img_fonte){
+	int altura = img_fonte->cab_bmp.altura_img;
+	int largura = img_fonte->cab_bmp.largura_img;
+	for (int i = 0; i < altura; i++){
+		fwrite(img_fonte->conteudo.pixels[i],1,largura,nova_img);
+	};
+}
+
+void escrever_arquivo_BMP256(FILE* arqv_BMP256,Img_BMP256* img_origem){
+	write_cabecalho_arqv(arqv_BMP256,img_origem);
+	write_cabecalho_bmp(arqv_BMP256,img_origem);
+	write_paleta(arqv_BMP256,img_origem);
+	write_conteudo(arqv_BMP256,img_origem);
+}

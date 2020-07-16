@@ -54,6 +54,7 @@ typedef struct imagem_bmp256{
 
 Img_BMP256* gerar_imagem();
 Img_BMP256* ler_arquivo_BMP256(FILE* arqv_BMP256,const char* nome_img);
+void escrever_arquivo_BMP256(FILE* arqv_BMP256,Img_BMP256* img_origem);
 void free_BMP256(Img_BMP256* img);
 void get_cabecalho_arqv(FILE* img_origem,Img_BMP256* img_dest);
 void get_cabecalho_bmp(FILE* img_origem,Img_BMP256* img_dest);
