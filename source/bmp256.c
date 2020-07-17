@@ -53,8 +53,6 @@ void get_cabecalho_bmp(FILE* img_origem,Img_BMP256* img_dest){
 	shift_lido += ler_campo(&cabecalho->pxl_per_metro_ver,4,bytes_lidos+shift_lido);
 	shift_lido += ler_campo(&cabecalho->n_cores_usadas,4,bytes_lidos+shift_lido);
 	shift_lido += ler_campo(&cabecalho->n_cores_uteis,4,bytes_lidos+shift_lido);
-	
-	cabecalho->largura_img = BMP_PAD(cabecalho->largura_img);
 	free(bytes_lidos);
 }
 
@@ -79,7 +77,7 @@ void gerar_conteudo(Img_BMP256* img,int altura,int largura){
 }
 
 void get_conteudo(FILE* img_origem,Img_BMP256* img_dest){
-	int altura_img = img_dest->cab_bmp.altura_img, largura_img = img_dest->cab_bmp.largura_img;
+	int altura_img = img_dest->cab_bmp.altura_img, largura_img = BMP_PAD(img_dest->cab_bmp.largura_img);
 	gerar_conteudo(img_dest,altura_img,largura_img);
 	int qntd_pixels = altura_img * largura_img;
 	int tam_pixel = TAMANHO_PIXEL(img_dest->cab_bmp.bits_per_pxl);
@@ -144,7 +142,7 @@ void write_paleta(FILE* nova_img,Img_BMP256* img_fonte){
 
 void write_conteudo(FILE* nova_img,Img_BMP256* img_fonte){
 	int altura = img_fonte->cab_bmp.altura_img;
-	int largura = img_fonte->cab_bmp.largura_img;
+	int largura = BMP_PAD(img_fonte->cab_bmp.largura_img);
 	for (int i = 0; i < altura; i++){
 		fwrite(img_fonte->conteudo.pixels[i],1,largura,nova_img);
 	};
