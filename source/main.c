@@ -4,7 +4,6 @@
 #include "filtro.h"
 #include "utils.h"
 
-
 int main(){
 	char* nome_arqv = read_line(stdin);
 	
@@ -22,13 +21,15 @@ int main(){
 		switch (opcao){
 		case 1:
 			filtro_negativo(imagem_saida);
+			nome_arqv = mudar_extensao(nome_arqv,"Negativo.bmp");
 			break;
 		case 2:
 			filtro_PB(imagem_saida);
+			nome_arqv = mudar_extensao(nome_arqv,"PretoBranco.bmp");
 			break;
 		};
 		
-		FILE* img_resultado = fopen("arqvmodificado.bmp", "wb");
+		FILE* img_resultado = fopen(nome_arqv, "wb");
 		escrever_arquivo_BMP256(img_resultado,imagem_saida);
 		fclose(img_resultado);
 		free_BMP256(imagem_saida);

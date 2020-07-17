@@ -19,3 +19,11 @@ char* read_line(FILE* input_stream){
 	line = realloc(line, position);
 	return line;
 }
+
+char* mudar_extensao(char* nome_arqv,char* nova_extensao){
+	int t_extensao = strlen(nova_extensao) - 4;	//nao precisamos allocar o .xxx
+	nome_arqv = realloc(nome_arqv,strlen(nome_arqv) + t_extensao + 1);
+	char* extensao = strrchr(nome_arqv,'.');
+	strcpy(extensao,nova_extensao);
+	return nome_arqv;
+}
