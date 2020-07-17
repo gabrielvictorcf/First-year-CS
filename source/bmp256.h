@@ -8,7 +8,7 @@
 #define QTD_CORES 256
 #define INTENSIDADE_MAX 255
 #define	TAMANHO_PIXEL(bits)	(bits/8)
-#define BMP_PAD(largura) (largura + largura%4)
+#define BMP_PAD(num) (num + (4 - num % 4))
 
 struct cabecalhoarquivo{
 	char assinatura[2];
