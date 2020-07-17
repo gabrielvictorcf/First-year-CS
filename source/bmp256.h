@@ -32,9 +32,9 @@ struct cabecalhobmp{
 };
 
 struct corBMP{
-	unsigned char red;
-	unsigned char green;
 	unsigned char blue;
+	unsigned char green;
+	unsigned char red;
 	unsigned char reservado;
 };
 
