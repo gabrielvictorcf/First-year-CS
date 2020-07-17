@@ -79,14 +79,13 @@ void gerar_conteudo(Img_BMP256* img,int altura,int largura){
 void get_conteudo(FILE* img_origem,Img_BMP256* img_dest){
 	int altura_img = img_dest->cab_bmp.altura_img, largura_img = BMP_PAD(img_dest->cab_bmp.largura_img);
 	gerar_conteudo(img_dest,altura_img,largura_img);
-	int qntd_pixels = altura_img * largura_img;
 	int tam_pixel = TAMANHO_PIXEL(img_dest->cab_bmp.bits_per_pxl);
 	int largura_linha = tam_pixel*largura_img;
 	struct conteudoBMP256* conteudo = &img_dest->conteudo;
 
 	int shift_lido = 0;
-	unsigned char* bytes_lidos = malloc(qntd_pixels * tam_pixel);
-	fread(bytes_lidos,1,qntd_pixels * tam_pixel,img_origem);
+	unsigned char* bytes_lidos = malloc(img_dest->cab_bmp.t_img);
+	fread(bytes_lidos,1,img_dest->cab_bmp.t_img,img_origem);
 	
 	for (int i = 0; i < altura_img; i++){
 		shift_lido += ler_campo(conteudo->pixels[i],largura_linha,bytes_lidos+shift_lido);
