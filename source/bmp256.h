@@ -57,4 +57,7 @@ Img_BMP256* gerar_imagem();
 Img_BMP256* ler_arquivo_BMP256(FILE* arqv_BMP256,const char* nome_img);
 void escrever_arquivo_BMP256(FILE* arqv_BMP256,Img_BMP256* img_origem);
 void free_BMP256(Img_BMP256* img);
+void print_BMP256_cabecalhos(Img_BMP256* imagem);
+void print_BMP256_paleta(Img_BMP256* imagem);
+void print_BMP256_soma_linhas(Img_BMP256* imagem);
 #endif

@@ -187,3 +187,20 @@ void print_BMP256_paleta(Img_BMP256* imagem){
 		cores[i].blue);
 	};
 }
+
+void print_BMP256_soma_linhas(Img_BMP256* imagem){
+	int altura  = imagem->cab_bmp.altura_img;
+	int largura = imagem->cab_bmp.largura_img;
+	int diff_cada_linha = largura % 4;
+
+	long long soma;
+	int linha_atual = 0;
+	for (int i = altura-1; i >= 0; i--,linha_atual++){
+		soma  = 0;
+		for (int j = 0; j < largura; j++){
+			soma += imagem->conteudo.pixels[i][j];
+			soma -= diff_cada_linha;
+		};
+		printf("Soma linha %d: %lld\n", linha_atual, soma);
+	};
+}
