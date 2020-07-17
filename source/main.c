@@ -31,10 +31,10 @@ int main(){
 		FILE* img_resultado = fopen("arqvmodificado.bmp", "wb");
 		escrever_arquivo_BMP256(img_resultado,imagem_saida);
 		fclose(img_resultado);
+		free_BMP256(imagem_saida);
 	}
 
 	fclose(imagem_entrada);
 	free(nome_arqv);
-	free_BMP256(imagem_saida);
 	return 0;
 }

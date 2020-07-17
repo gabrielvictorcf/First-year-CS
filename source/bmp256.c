@@ -109,6 +109,8 @@ Img_BMP256* ler_arquivo_BMP256(FILE* arqv_BMP256,const char* nome_img){
 		get_conteudo(arqv_BMP256,img_saida);
 	}else{
 		printf("Arquivo nao e do formato BMP\n");
+		free(img_saida->paleta.cores);
+		free(img_saida);
 		return NULL;
 	};
 	return img_saida;
