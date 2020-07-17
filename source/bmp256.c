@@ -102,7 +102,7 @@ Img_BMP256* ler_arquivo_BMP256(FILE* arqv_BMP256,const char* nome_img){
 
 	char* extensao = strrchr(nome_img,'.');
 	char* assinatura = img_saida->cab_arqv.assinatura;
-	if(!strcmp(extensao,".bmp") && !strcmp(assinatura,"BM")){
+	if(!strcmp(extensao,".bmp") && !strncmp(assinatura,"BM",2)){
 		printf("Consegui abrir!\n");
 		get_cabecalho_bmp(arqv_BMP256,img_saida);
 		get_paleta(arqv_BMP256,img_saida);
