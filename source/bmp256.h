@@ -1,13 +1,14 @@
-#include <stdio.h>
+#include <stdio.h>	// Autor: Gabriel Victor C.F.	BCC@ICMC/USP	July2020
 #include <stdlib.h>
 #include <string.h>
 
 #ifndef _BMP256FILE_H_
 #define _BMP256FILE_H_
 
-#define QTD_CORES 256
-#define INTENSIDADE_MAX 255
+#define QTD_CORES 256	//Quantidade máxima do formato 256 cores
+#define INTENSIDADE_MAX 255	//Intensidade maxima de cada RGB na paleta
 #define	TAMANHO_PIXEL(bits)	(bits/8)
+//Arredonda num, para cima, ao multiplo de 4 mais próximo
 #define BMP_PAD(num) ( num = (num % 4)? num + (4 - num % 4): num)
 
 struct cabecalhoarquivo{
@@ -31,6 +32,7 @@ struct cabecalhobmp{
 	int n_cores_uteis;
 };
 
+//Armazena cor na mesma ordem achada no BMP
 struct corBMP{
 	unsigned char blue;
 	unsigned char green;
@@ -46,6 +48,7 @@ struct conteudoBMP256{
 	unsigned char** pixels;
 };
 
+//Com todas estruturas anteriores temos o modelo da Imagem Bitmap 256-cores
 typedef struct imagem_bmp256{
 	struct cabecalhoarquivo cab_arqv;
 	struct cabecalhobmp cab_bmp;
