@@ -159,22 +159,22 @@ void print_BMP256_cabecalhos(Img_BMP256* imagem){
 	struct cabecalhoarquivo cab_arqv = imagem->cab_arqv;
 	struct cabecalhobmp cab_bmp = imagem->cab_bmp;
 	printf("CABECALHO:\n");
-	printf("Iniciais: %c%c\n",cab_arqv.assinatura[0],cab_arqv.assinatura[1]);
-	printf("Tamanho do arquivo: %d\n",cab_arqv.t_arqv);
-	printf("Reservado: %d\n",cab_arqv.reservado);
+	printf("Iniciais: %c%c\n", cab_arqv.assinatura[0],cab_arqv.assinatura[1]);
+	printf("Tamanho do arquivo: %d\n", cab_arqv.t_arqv);
+	printf("Reservado: %d\n", cab_arqv.reservado);
 	printf("Deslocamento, em bytes, para o inicio da area de dados: %d\n"
 		,cab_arqv.deslocamento);
 
-	printf("Tamanho em bytes do segundo cabecalho: %d\n",cab_bmp.t_cabecalho);
-	printf("Resolucao: %d\n",cab_bmp.altura_img * cab_bmp.largura_img);
-	printf("Numero de planos: %d\n",cab_bmp.n_planos);
-	printf("Bits por pixel: %d\n",cab_bmp.bits_per_pxl);
-	printf("Compressao usada: %d\n",cab_bmp.compressao);
-	printf("Tamanho imagem: %d\n",cab_bmp.t_img);
-	printf("Resolucao horizontal: %d\n",cab_bmp.pxl_per_metro_hor);
-	printf("Resolucao vetical: %d\n",cab_bmp.pxl_per_metro_ver);
-	printf("Numero de cores usadas: %d\n",cab_bmp.n_cores_usadas);
-	printf("Numero de cores importantes: %d\n",cab_bmp.n_cores_uteis);
+	printf("Tamanho em bytes do segundo cabecalho: %d\n", cab_bmp.t_cabecalho);
+	printf("Resolucao: %d x %d\n", cab_bmp.largura_img, cab_bmp.altura_img);
+	printf("Numero de planos: %d\n", cab_bmp.n_planos);
+	printf("Bits por pixel: %d\n", cab_bmp.bits_per_pxl);
+	printf("Compressao usada: %d\n", cab_bmp.compressao);
+	printf("Tamanho imagem: %d\n", cab_bmp.t_img);
+	printf("Resolucao horizontal: %d pixel por metro\n", cab_bmp.pxl_per_metro_hor);
+	printf("Resolucao Vertical: %d pixel por metro\n", cab_bmp.pxl_per_metro_ver);
+	printf("Numero de cores usadas: %d\n", cab_bmp.n_cores_usadas);
+	printf("Numero de cores importantes: %d\n", cab_bmp.n_cores_uteis);
 }
 
 void print_BMP256_paleta(Img_BMP256* imagem){
@@ -191,7 +191,7 @@ void print_BMP256_paleta(Img_BMP256* imagem){
 void print_BMP256_soma_linhas(Img_BMP256* imagem){
 	int altura  = imagem->cab_bmp.altura_img;
 	int largura = imagem->cab_bmp.largura_img;
-	int diff_cada_linha = largura % 4;
+	int diff = BMP_PAD(largura) - largura;
 
 	long long soma;
 	int linha_atual = 0;
@@ -199,8 +199,8 @@ void print_BMP256_soma_linhas(Img_BMP256* imagem){
 		soma  = 0;
 		for (int j = 0; j < largura; j++){
 			soma += imagem->conteudo.pixels[i][j];
-			soma -= diff_cada_linha;
 		};
+		soma = soma - diff;
 		printf("Soma linha %d: %lld\n", linha_atual, soma);
 	};
 }

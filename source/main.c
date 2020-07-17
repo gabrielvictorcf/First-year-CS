@@ -17,7 +17,12 @@ int main(){
 	Img_BMP256* imagem_saida = ler_arquivo_BMP256(imagem_entrada,nome_arqv);
 	if(imagem_saida){
 		int opcao;
-		scanf("%d ",&opcao);
+		scanf("%d",&opcao);
+
+		print_BMP256_cabecalhos(imagem_saida);
+		printf("PALETA ORIGINAL:\n");
+		print_BMP256_paleta(imagem_saida);
+		
 		switch (opcao){
 		case 1:
 			filtro_negativo(imagem_saida);
@@ -28,6 +33,11 @@ int main(){
 			nome_arqv = mudar_extensao(nome_arqv,"PretoBranco.bmp");
 			break;
 		};
+		
+		printf("PALETA NOVA:\n");
+		print_BMP256_paleta(imagem_saida);
+		print_BMP256_soma_linhas(imagem_saida);
+		printf("%s\n",nome_arqv);
 		
 		FILE* img_resultado = fopen(nome_arqv, "wb");
 		escrever_arquivo_BMP256(img_resultado,imagem_saida);
