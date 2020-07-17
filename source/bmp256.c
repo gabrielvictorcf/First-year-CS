@@ -77,7 +77,8 @@ void gerar_conteudo(Img_BMP256* img,int altura,int largura){
 }
 
 void get_conteudo(FILE* img_origem,Img_BMP256* img_dest){
-	int altura_img = img_dest->cab_bmp.altura_img, largura_img = BMP_PAD(img_dest->cab_bmp.largura_img);
+	int altura_img = img_dest->cab_bmp.altura_img, largura_img = img_dest->cab_bmp.largura_img;
+	BMP_PAD(largura_img);
 	gerar_conteudo(img_dest,altura_img,largura_img);
 	int tam_pixel = TAMANHO_PIXEL(img_dest->cab_bmp.bits_per_pxl);
 	int largura_linha = tam_pixel*largura_img;
@@ -100,12 +101,11 @@ Img_BMP256* ler_arquivo_BMP256(FILE* arqv_BMP256,const char* nome_img){
 	char* extensao = strrchr(nome_img,'.');
 	char* assinatura = img_saida->cab_arqv.assinatura;
 	if(!strcmp(extensao,".bmp") && !strncmp(assinatura,"BM",2)){
-		printf("Consegui abrir!\n");
 		get_cabecalho_bmp(arqv_BMP256,img_saida);
 		get_paleta(arqv_BMP256,img_saida);
 		get_conteudo(arqv_BMP256,img_saida);
 	}else{
-		printf("Arquivo nao e do formato BMP\n");
+		printf("Arquivo nao eh do formato BMP\n");
 		free(img_saida->paleta.cores);
 		free(img_saida);
 		return NULL;
@@ -141,7 +141,8 @@ void write_paleta(FILE* nova_img,Img_BMP256* img_fonte){
 
 void write_conteudo(FILE* nova_img,Img_BMP256* img_fonte){
 	int altura = img_fonte->cab_bmp.altura_img;
-	int largura = BMP_PAD(img_fonte->cab_bmp.largura_img);
+	int largura = img_fonte->cab_bmp.largura_img;
+	BMP_PAD(largura);
 	for (int i = 0; i < altura; i++){
 		fwrite(img_fonte->conteudo.pixels[i],1,largura,nova_img);
 	};
@@ -190,7 +191,9 @@ void print_BMP256_paleta(Img_BMP256* imagem){
 void print_BMP256_soma_linhas(Img_BMP256* imagem){
 	int altura  = imagem->cab_bmp.altura_img;
 	int largura = imagem->cab_bmp.largura_img;
-	int diff = BMP_PAD(largura) - largura;
+	int largura_padded = largura;
+	BMP_PAD(largura_padded);
+	int diff = largura_padded - largura;
 
 	long long soma;
 	int linha_atual = 0;
