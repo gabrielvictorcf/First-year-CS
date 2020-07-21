@@ -1,7 +1,7 @@
 #include "metadados.h"
 
-//As funcoes de print serao designadas
-//ao ponteiro de funcao print de cada campo.
+//As funcoes de print e inserir abaixo serao designadas
+// para cada campo de acordo com seu tipo em gerar_campo()
 void print_string(char* nome,void* str){
 	printf("%s: %s\n",nome,((char*)str));
 };
@@ -19,7 +19,7 @@ void print_double(char* nome,void* dbl){
 };
 
 void inserir_string(char* campo,FILE* arqv_reg,int t_campo){
-	char* str = calloc(t_campo,1);
+	char* str = calloc(t_campo,1);	//esse calloc garante o tamanho estatico necessario
 	char* str_aux = extrair_aspas(campo);
 	str = strcpy(str,str_aux);
 	fwrite(str,t_campo,1,arqv_reg);
@@ -42,7 +42,7 @@ void inserir_double(char* campo,FILE* arqv_reg,int t_campo){
 	fwrite(&d_num,sizeof(double),1,arqv_reg);
 };
 
-//Funcao aux que gera e classifica um campo lendo 2 linhas dum .dat
+//Funcao aux que gera e classifica um campo usando o field-name e field-type
 struct campo* gerar_campo(FILE* arqv_dat){
 	char* linha = read_line(arqv_dat);
 	if(!linha) return NULL;
@@ -121,6 +121,7 @@ void free_banco(banco_dados* banco){
 	free(banco);
 }
 
+//Escreve os dados dum insert no final do arquivo de registros
 void processar_insert(char* dados,banco_dados* banco,FILE* arqv_reg){
 	fseek(arqv_reg,0,SEEK_END);
 	char* campo = strtok(dados,",");
@@ -135,20 +136,22 @@ void processar_insert(char* dados,banco_dados* banco,FILE* arqv_reg){
 	banco->qtd_registros++;
 }
 
+//Compara structs indice's pela suas chaves no qsort() e bsearch()
 int comp_indices(const void* n1,const void* n2){
 	return (*(struct indice*)n1).chave - (*(struct indice*)n2).chave;
 }
 
+//Carrega um arquivo de registros para a memoria
 void carregar_registros(banco_dados* banco,FILE* reg){
 	if(!reg) return;
 
 	unsigned char* registros = malloc(banco->qtd_registros * banco->tam_registro);
 	fseek(reg,0,SEEK_SET);
 	fread(registros,banco->tam_registro,banco->qtd_registros,reg);
-
 	banco->registros = registros;
 }
 
+//Gera um .idx com as chaves e os seus ofsets correspondentes e o ordena pela chave
 void indexar_banco(banco_dados* banco,FILE* reg){
 	if(!banco->registros) carregar_registros(banco,reg);
 	
@@ -171,6 +174,7 @@ void indexar_banco(banco_dados* banco,FILE* reg){
 	fclose(idx);
 }
 
+//Printa o registro desejado usando campo->print()
 void print_registro(unsigned char* registro,banco_dados* banco){
 	banco->chave->print(banco->chave->nome,registro);
 
@@ -182,6 +186,7 @@ void print_registro(unsigned char* registro,banco_dados* banco){
 	printf("\n");
 }
 
+//Procura por uma chave no .idx e printa os dados relacionados, cajo existam
 void search_banco(banco_dados* banco,int chave,FILE* reg){
 	char* nome_idx = str_dup(banco->nome_arqv);
 	nome_idx = mudar_extensao(nome_idx,".idx");
