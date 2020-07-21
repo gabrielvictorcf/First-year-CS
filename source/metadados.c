@@ -201,7 +201,10 @@ void search_banco(banco_dados* banco,int chave,FILE* reg){
 	fclose(idx);
 
 	struct indice* ind_procurado = bsearch(&chave,RRN,banco->qtd_registros,sizeof(struct indice),comp_indices);
-	if(!ind_procurado) return;
+	if(!ind_procurado){
+		free(RRN);
+	 	return;
+	};
 
 	fseek(reg,ind_procurado->offset,SEEK_SET);
 	unsigned char* registro = calloc(1,banco->tam_registro);
