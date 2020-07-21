@@ -53,7 +53,6 @@ struct campo* gerar_campo(FILE* arqv_dat){
 	free(linha);
 	free(str_aux);
 
-
 	linha = read_line(arqv_dat);
 	str_aux = strchr(linha,' ');
 	switch (str_aux[1]){
@@ -101,9 +100,7 @@ banco_dados* processar_metadados(FILE* arqv_dat){
 	struct campo* campo;
 	while ((campo = gerar_campo(arqv_dat))){
 		novo_banco->campos = realloc(novo_banco->campos, (qtd+1) * sizeof(struct campo*));
-		novo_banco->campos[qtd] = malloc(sizeof(struct campo));
-		memcpy(novo_banco->campos[qtd],campo,sizeof(struct campo));
-		free(campo);
+		novo_banco->campos[qtd] = campo;
 		novo_banco->tam_registro += novo_banco->campos[qtd]->len;
 		qtd++;
 	};
