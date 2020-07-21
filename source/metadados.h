@@ -8,18 +8,11 @@
 
 #define T_NOME_CAMPO 20
 
-typedef enum TIPOS_POSSIVEIS{
-	CHAR = 0,
-	INT = 1,
-	FLOAT = 2,
-	DOUBLE = 3
-}tipos_aceitos;
-
 struct campo{
 	char nome[T_NOME_CAMPO];
-	tipos_aceitos tipo;
 	short len;
 	void (*print)(char*,void*);
+	void (*inserir)(char*,FILE*,int);
 };
 
 struct indice{

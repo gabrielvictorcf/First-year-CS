@@ -18,6 +18,30 @@ void print_double(char* nome,void* dbl){
 	printf("%s: %.2lf\n",nome,(*(double*)dbl));
 };
 
+void inserir_string(char* campo,FILE* arqv_reg,int t_campo){
+	char* str = calloc(t_campo,1);
+	char* str_aux = extrair_aspas(campo);
+	str = strcpy(str,str_aux);
+	fwrite(str,t_campo,1,arqv_reg);
+	free(str);
+	free(str_aux);
+};
+
+void inserir_int(char* campo,FILE* arqv_reg,int t_campo){
+	int i_num = atoi(campo);
+	fwrite(&i_num,sizeof(int),1,arqv_reg);
+};
+
+void inserir_float(char* campo,FILE* arqv_reg,int t_campo){
+	float f_num = atof(campo);
+	fwrite(&f_num,sizeof(float),1,arqv_reg);
+};
+
+void inserir_double(char* campo,FILE* arqv_reg,int t_campo){
+	double d_num = atof(campo);
+	fwrite(&d_num,sizeof(double),1,arqv_reg);
+};
+
 //Funcao aux que gera e classifica um campo lendo 2 linhas dum .dat
 struct campo* gerar_campo(FILE* arqv_dat){
 	char* linha = read_line(arqv_dat);
@@ -34,26 +58,26 @@ struct campo* gerar_campo(FILE* arqv_dat){
 	str_aux = strchr(linha,' ');
 	switch (str_aux[1]){
 	case 'c':
-		novo_campo->tipo = CHAR;
 		str_aux = extrair_colchetes(str_aux);
 		novo_campo->len = atoi(str_aux);
-		novo_campo->print = print_string;
 		free(str_aux);
+		novo_campo->print = print_string;
+		novo_campo->inserir = inserir_string;
 		break;
 	case 'i':
-		novo_campo->tipo = INT;
 		novo_campo->len = sizeof(int);
 		novo_campo->print = print_inteiro;
+		novo_campo->inserir = inserir_int;
 		break;
 	case 'f':
-		novo_campo->tipo = FLOAT;
 		novo_campo->len = sizeof(float);
 		novo_campo->print = print_float;
+		novo_campo->inserir = inserir_float;
 		break;
 	case 'd':
-		novo_campo->tipo = DOUBLE;
 		novo_campo->len = sizeof(double);
 		novo_campo->print = print_double;
+		novo_campo->inserir = inserir_double;
 		break;
 	};
 	free(linha);
@@ -109,29 +133,7 @@ void processar_insert(char* dados,banco_dados* banco,FILE* arqv_reg){
 	for (short i = 0; i < banco->qtd_campos; i++){
 		campo = strtok(NULL,",");
 		int t_campo = banco->campos[i]->len;
-		switch (banco->campos[i]->tipo){
-		case CHAR:	{
-					char* str = calloc(t_campo,1);
-					char* str_aux = extrair_aspas(campo);
-					str = strcpy(str,str_aux);
-					fwrite(str,t_campo,1,arqv_reg);
-					free(str);
-					free(str_aux);
-					break;
-		};
-		case INT:{	int i_num = atoi(campo);
-					fwrite(&i_num,sizeof(int),1,arqv_reg);
-					break;
-		};
-		case FLOAT:{	float f_num = atof(campo);
-						fwrite(&f_num,sizeof(float),1,arqv_reg);
-						break;
-		};
-		case DOUBLE:{	double d_num = atof(campo);
-						fwrite(&d_num,sizeof(double),1,arqv_reg);
-						break;
-		};
-		};
+		banco->campos[i]->inserir(campo,arqv_reg,t_campo);
 	};
 	banco->qtd_registros++;
 }
