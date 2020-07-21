@@ -1,5 +1,6 @@
 #include "utils.h"
 
+//Leitura dinamica de arquivo, retorna NULL caso a linha seja vazia
 char* read_line(FILE* input_stream){
 	char* line = NULL;
 	int pos = 0;
@@ -31,7 +32,7 @@ char* str_dup(char* str_fonte){
 	return strcpy(nova_str,str_fonte);
 }
 
-//	Retorna a quantidade de argumentos/palavras numa string
+//Retorna a quantidade de argumentos/palavras numa string
 int pegar_quantidade_args(char* line){
 	int pos = 0, args = 0;
 	do{
@@ -40,6 +41,7 @@ int pegar_quantidade_args(char* line){
 	return args + 1;
 }
 
+//Retorna uma string com o argumento desejado
 char* extrair_arg(char* fonte,int n_arg){
 	char* pos = fonte;
 	while (n_arg > 0){
@@ -54,7 +56,7 @@ char* extrair_arg(char* fonte,int n_arg){
 	return arg;
 }
 
-//Extrai o dado entre [] para uso em funcoes como atoi
+//Extrai os dados entre [] e os retorna como uma nova string
 char* extrair_colchetes(char* str){
 	char* str_aux = strrchr(str,'[');
 	char* dado = str_dup(str_aux+1);
@@ -63,6 +65,7 @@ char* extrair_colchetes(char* str){
 	return dado;
 }
 
+//Extrai os dados entre aspas e os retorna como uma nova string
 char* extrair_aspas(char* str){
 	char* dado = strchr(str,'\"');
 	dado = str_dup(dado+1);
