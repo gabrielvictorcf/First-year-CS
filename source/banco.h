@@ -3,8 +3,8 @@
 #include <string.h>
 #include "utils.h"
 
-#ifndef	_METADADOS_H_
-#define	_METADADOS_H_
+#ifndef	_SGDB_H_
+#define	_SGDB_H_
 
 #define T_NOME_CAMPO 20
 

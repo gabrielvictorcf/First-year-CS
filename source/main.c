@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "metadados.h"
+#include "banco.h"
 
 int main(int argc, char const *argv[]){
 	char* nome_dat = read_line(stdin);

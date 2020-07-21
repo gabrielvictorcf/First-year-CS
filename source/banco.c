@@ -1,4 +1,4 @@
-#include "metadados.h"
+#include "banco.h"
 
 //As funcoes de print e inserir abaixo serao designadas
 // para cada campo de acordo com seu tipo em gerar_campo()
