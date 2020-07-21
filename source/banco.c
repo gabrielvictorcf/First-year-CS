@@ -80,7 +80,7 @@ struct campo* gerar_campo(FILE* arqv_dat){
 		break;
 	};
 	free(linha);
-	return novo_campo;	
+	return novo_campo;
 }
 
 //Essa funcao processa um .dat inteiramente e gera um banco
@@ -92,7 +92,7 @@ banco_dados* processar_metadados(FILE* arqv_dat){
 	char* linha = read_line(arqv_dat);
 	novo_banco->nome_arqv = extrair_arg(linha,1);
 	free(linha);
-	
+
 	novo_banco->chave = gerar_campo(arqv_dat);
 	novo_banco->tam_registro = novo_banco->chave->len;
 	novo_banco->campos = NULL;
@@ -105,7 +105,7 @@ banco_dados* processar_metadados(FILE* arqv_dat){
 		qtd++;
 	};
 	free(campo);
-	
+
 	novo_banco->qtd_campos = qtd;
 	return novo_banco;
 }
@@ -154,14 +154,14 @@ void carregar_registros(banco_dados* banco,FILE* reg){
 //Gera um .idx com as chaves e os seus ofsets correspondentes e o ordena pela chave
 void indexar_banco(banco_dados* banco,FILE* reg){
 	if(!banco->registros) carregar_registros(banco,reg);
-	
+
 	struct indice* RRN = malloc(banco->qtd_registros * sizeof(struct indice));
 	for (unsigned i = 0; i < banco->qtd_registros; i++){
 		int shift = i * banco->tam_registro;
 		memcpy(&RRN[i].chave,banco->registros+shift,sizeof(int));
 		RRN[i].offset = shift;
 	};
-	
+
 	qsort(RRN,banco->qtd_registros,sizeof(struct indice),comp_indices);
 
 	char* idx_name = str_dup(banco->nome_arqv);
@@ -202,7 +202,8 @@ void search_banco(banco_dados* banco,int chave,FILE* reg){
 	fread(RRN,sizeof(struct indice),banco->qtd_registros,idx);
 	fclose(idx);
 
-	struct indice* ind_procurado = bsearch(&chave,RRN,banco->qtd_registros,sizeof(struct indice),comp_indices);
+	struct indice* ind_procurado;
+	ind_procurado = bsearch(&chave,RRN,banco->qtd_registros,sizeof(struct indice),comp_indices);
 	if(!ind_procurado){
 		free(RRN);
 	 	return;

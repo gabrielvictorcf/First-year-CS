@@ -49,7 +49,7 @@ char* extrair_arg(char* fonte,int n_arg){
 		pos++;
 	};
 	int n_chars = strcspn(pos," \n\r");
-	
+
 	char* arg = malloc(n_chars+1);
 	arg = strncpy(arg,pos,n_chars);
 	arg[n_chars] = '\0';

@@ -30,7 +30,6 @@ typedef struct BANCO_DADOS{
 	unsigned qtd_registros;
 }banco_dados;
 
-
 banco_dados* processar_metadados(FILE* arqv_dat);
 void processar_insert(char* dados,banco_dados* banco,FILE* arqv_reg);
 void indexar_banco(banco_dados* banco,FILE* reg);
