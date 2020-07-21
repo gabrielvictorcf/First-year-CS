@@ -12,9 +12,9 @@ int main(int argc, char const *argv[]){
 	fclose(dat);
 
 	FILE* reg = fopen(meu_banco->nome_arqv,"wb+");
-	char* ln_atual;
-	while ((ln_atual = read_line(stdin))){
-		char* comando = extrair_arg(ln_atual,0);
+	char* ln_atual = read_line(stdin);
+	char* comando = extrair_arg(ln_atual,0);
+	while (strcmp(comando,"exit")){
 		char* dados = strchr(ln_atual,' ');
 		if(!strcmp(comando,"insert")){
 			processar_insert(dados,meu_banco,reg);
@@ -28,8 +28,12 @@ int main(int argc, char const *argv[]){
 		};
 		free(ln_atual);
 		free(comando);
-	};
+		ln_atual = read_line(stdin);
+		comando = extrair_arg(ln_atual,0);
+	}
 
+	free(ln_atual);
+	free(comando);
 	free_banco(meu_banco);
 	fclose(reg);
 	return 0;
