@@ -1,0 +1,8 @@
+.vscode/
+descricao/
+
+#Arquivos e objetos compilados#
+*.o
+*.exe
+*.txt
+teste.*
