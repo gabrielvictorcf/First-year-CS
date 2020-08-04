@@ -1,5 +1,6 @@
-#include "filtro.h"
+#include "filtro.h"	// Autor: Gabriel Victor C.F.	BCC@ICMC/USP	July2020
 
+//Aplica filtro negativo à paleta
 void filtro_negativo(Img_BMP256* imagem){
 	struct corBMP* corBMP = imagem->paleta.cores;
 	for (int i = 0; i < QTD_CORES; i++){
@@ -9,6 +10,7 @@ void filtro_negativo(Img_BMP256* imagem){
 	};
 }
 
+//Aplica filtro preto e branco à uma paleta
 void filtro_PB(Img_BMP256* imagem){
 	struct corBMP* cor = imagem->paleta.cores;
 	for (int i = 0; i < QTD_CORES; i++){

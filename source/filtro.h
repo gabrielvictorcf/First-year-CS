@@ -1,4 +1,4 @@
-#include "bmp256.h"
+#include "bmp256.h"	// Autor: Gabriel Victor C.F.	BCC@ICMC/USP	July2020
 
 #ifndef _FILTROSBMP_H_
 #define _FILTROSBMP_H_
